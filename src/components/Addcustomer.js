@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
-import { Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
+import { Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faPlus);
 
 class Addcustomer extends Component {
     constructor(props) {
         super(props);
         this.state = {
             modal: false,
-            visible: false,
             firstname: '',
             lastname: '',
-            street: '',
+            streetaddress: '',
             postcode: '',
             city: '',
             email: '',
@@ -17,7 +21,6 @@ class Addcustomer extends Component {
         };
 
         this.toggle = this.toggle.bind(this);
-        this.onDismiss = this.onDismiss.bind(this);
     }
 
     handleChange = (event) => {
@@ -30,15 +33,11 @@ class Addcustomer extends Component {
         });
     }
 
-    onDismiss() {
-        this.setState({ visible: false });
-    }
-
     saveCustomer = () => {
         const customer = {
             firstname: this.state.firstname,
             lastname: this.state.lastname,
-            street: this.state.street,
+            streetaddress: this.state.streetaddress,
             postcode: this.state.postcode,
             city: this.state.city,
             email: this.state.email,
@@ -48,20 +47,19 @@ class Addcustomer extends Component {
         this.setState({
             firstname: '',
             lastname: '',
-            street: '',
+            streetaddress: '',
             postcode: '',
             city: '',
             email: '',
             phone: ''         
         })
         this.toggle();
-        this.setState({ visible: true });
     }
 
     render() {
         return (
         <div className="m-2">
-            <Button color="primary" size="sm" onClick={this.toggle}>Add Customer</Button>
+            <Button color="primary" size="sm" onClick={this.toggle}><FontAwesomeIcon icon="plus" /> Add Customer</Button>
             <Modal isOpen={this.state.modal} toggle={this.toggle} size='lg'>
             <ModalHeader toggle={this.toggle}>Add Customer</ModalHeader>
             <ModalBody>
@@ -79,9 +77,9 @@ class Addcustomer extends Component {
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="streetText" sm={2}>Street</Label>
+                        <Label for="streetaddressText" sm={2}>Street</Label>
                         <Col sm={10}>
-                            <Input type="text" name="street" id="streetText" onChange={this.handleChange} value={this.state.street} />
+                            <Input type="text" name="streetaddress" id="streetaddressText" onChange={this.handleChange} value={this.state.streetaddress} />
                         </Col>
                     </FormGroup>
                     <FormGroup row>
@@ -115,9 +113,6 @@ class Addcustomer extends Component {
                 <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
             </Modal>
-            <Alert color="success" isOpen={this.state.visible} toggle={this.onDismiss} className="Alert-bottom">
-                Customer Added Successfully!
-            </Alert>
         </div>
         );
     }

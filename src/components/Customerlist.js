@@ -2,27 +2,34 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import Addcustomer from './Addcustomer.js';
 import 'react-table/react-table.css';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { Alert, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import '../App.css';
 
-library.add(faTrash)
+library.add(faTrash);
 
 class Customerlist extends Component {
     constructor(params) {
         super(params);
         this.state = {
             customers: [],
-            modal: false
+            modal: false,
+            visible: false,
         };
         this.toggle = this.toggle.bind(this);
+        this.onDismiss = this.onDismiss.bind(this);
     }
 
     toggle() {
         this.setState({
           modal: !this.state.modal
         });
+    }
+
+    onDismiss() {
+        this.setState({ visible: false });
     }
 
     listCustomers = () => {
@@ -50,6 +57,7 @@ class Customerlist extends Component {
         })
         .then(response => {
             this.listCustomers();
+            this.setState({ visible: true });
         })
         .catch(err => {
             console.error(err);
@@ -129,6 +137,9 @@ class Customerlist extends Component {
                 filterable defaultFilterMethod={this.filterMethod}
                 defaultPageSize={10}
                 />
+                <Alert color="success" isOpen={this.state.visible} toggle={this.onDismiss} className="fixed-bottom">
+                    Customer Added Successfully!
+                </Alert>
             </div>
         );
     }
