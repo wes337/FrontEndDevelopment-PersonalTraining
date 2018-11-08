@@ -5,6 +5,7 @@ import Trainingslist from './components/Trainingslist.js';
 import Home from './components/Home.js';
 import { Button } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
+import './App.css';
 
 class App extends Component {
   render() {
@@ -13,7 +14,7 @@ class App extends Component {
       <Container>
         <Row>
           <Col className="text-center m-2">
-            <h1 className="display-4">Personal Training Company</h1>
+            <h1 className="display-5">Personal Training Company</h1>
             <Link to="/Customers/"><Button outline color="primary">Customers</Button></Link>{' '}
             <Link to="/Trainings/"><Button outline color="primary">Trainings</Button></Link> 
           </Col>
