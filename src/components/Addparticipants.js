@@ -3,6 +3,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, In
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
+
 
 library.add(faPlus);
 
@@ -10,10 +12,19 @@ class Addparticipants extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false
+            modal: false,
+            trainings: []
         };
 
         this.toggle = this.toggle.bind(this);
+    }
+
+    componentDidMount() {
+        fetch('https://customerrest.herokuapp.com/api/trainings')
+        .then(response => response.json())
+        .then(responseData => {
+            this.setState({trainings: responseData.content})
+        })
     }
 
     toggle() {
@@ -25,19 +36,17 @@ class Addparticipants extends Component {
     render() {
         return (
             <div className="text-center">
-                <Button color="primary" size="sm" onClick={this.toggle}><FontAwesomeIcon icon="plus" /> Add Participants</Button>
+                <Button outline color="primary" size="sm" onClick={this.toggle}><FontAwesomeIcon icon="plus" /></Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} size='lg'>
-                    <ModalHeader toggle={this.toggle}>Add Participants</ModalHeader>
+                    <ModalHeader toggle={this.toggle}>Add Training</ModalHeader>
                         <ModalBody>
                             <Form>
                                 <FormGroup>
                                     <Label for="exampleSelectMulti">Select Multiple</Label>
                                     <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
+                                    {this.state.trainings.map((training, index) =>
+                                        <option key={index}>{training.activity} ({moment(training.date).format("DD MMM YYYY")})</option>
+                                    )}                                    
                                     </Input>
                                 </FormGroup>
                             </Form>

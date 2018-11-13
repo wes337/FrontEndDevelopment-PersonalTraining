@@ -10,9 +10,7 @@ class Trainingslist extends Component {
         super(params);
         this.state = {
             trainings: [],
-            trainingsWithMembers: [{
-                members: ""
-            }]
+            customers: []
         };
     }
 

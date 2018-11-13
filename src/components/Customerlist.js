@@ -7,6 +7,8 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import '../App.css';
+import Addparticipants from './Addparticipants.js';
+import Customerschedule from './Customerschedule.js';
 
 library.add(faTrash);
 
@@ -32,7 +34,7 @@ class Customerlist extends Component {
         this.setState({ visible: false });
     }
 
-    listCustomers = function() {
+    listCustomers() {
         fetch('https://customerrest.herokuapp.com/api/customers')
         .then(response => response.json())
         .then(responseData => {
@@ -106,6 +108,26 @@ class Customerlist extends Component {
                 Header: 'Phone',
                 accessor: 'phone'
             }]
+        }, {
+            Header: '',
+            accessor: '',
+            filterable: false,
+            sortable: false,
+            Cell: ({row, value}) => (
+                <div>
+                    <Addparticipants />
+                </div>
+            )
+        }, {
+            Header: '',
+            accessor: '',
+            filterable: false,
+            sortable: false,
+            Cell: ({row, value}) => (
+                <div>
+                    <Customerschedule />               
+                </div>
+            )            
         }, {
             Header: '',
             accessor: 'links.0.href',
