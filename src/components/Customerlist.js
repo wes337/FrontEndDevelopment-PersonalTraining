@@ -5,7 +5,7 @@ import 'react-table/react-table.css';
 import { Alert, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import '../App.css';
 
 library.add(faTrash);
@@ -32,7 +32,7 @@ class Customerlist extends Component {
         this.setState({ visible: false });
     }
 
-    listCustomers = () => {
+    listCustomers = function() {
         fetch('https://customerrest.herokuapp.com/api/customers')
         .then(response => response.json())
         .then(responseData => {
