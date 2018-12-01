@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import moment from 'moment';
-import Addparticipants from './Addparticipants.js';
 
 
 class Trainingslist extends Component {
@@ -41,16 +40,6 @@ class Trainingslist extends Component {
         }, {
             Header: 'Duration',
             accessor: 'duration'
-        }, {
-            Header: 'Participants',
-            accessor: '',
-            filterable: false,
-            sortable: false,
-            Cell: ({row, value}) => (
-                <div>
-                    <Addparticipants />
-                </div>
-            )
         }]
         return (
             <div>

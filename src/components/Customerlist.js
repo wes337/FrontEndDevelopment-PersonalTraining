@@ -17,7 +17,9 @@ class Customerlist extends Component {
         this.state = {
             customers: [],
             customer: "",
-            selectedtraining: [],
+            date: "",
+            activity: "",
+            duration: "",
             trainings: [],
             modal: false,
             modal2: false,
@@ -25,7 +27,7 @@ class Customerlist extends Component {
             deletevisible: false,
         };
         this.toggle = this.toggle.bind(this);
-        this.toggle2 = this.toggle2.bind(this);
+        this.toggle2 = this.toggle2.bind(this); 
         this.onDismiss = this.onDismiss.bind(this);
     }
 
@@ -37,17 +39,21 @@ class Customerlist extends Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
-    toggle2() {this.toggle2 = this.toggle2.bind(this);
-        this.setState({
-          modal2: !this.state.modal2
-        });
-    }
+    // Modal Toggles (is there a better way to do this?)
 
     toggle() {this.toggle = this.toggle.bind(this);
         this.setState({
           modal: !this.state.modal
         });
     }
+
+    toggle2() {this.toggle2 = this.toggle2.bind(this);
+        this.setState({
+          modal2: !this.state.modal2
+        });
+    }
+
+    // ------------------------ //
 
     onDismiss() {
         this.setState({ visible: false, deletevisible: false });
@@ -106,20 +112,19 @@ class Customerlist extends Component {
         })
     }
 
-      // Save a new training
-    saveTraining = (trg) => {
-     //   const training = {
-     //   date: this.state.selectedtraining.date,
-     //   activity: this.state.selectedtraining.activity,
-     //   duration: this.state.selectedtraining.duration,
-     //   customer: this.state.customer
-     //   };
-       // fetch("https://customerrest.herokuapp.com/api/trainings" + this.state.selectedtraining.id, {
-      //  method: "POST",
-      //  headers: { "Content-Type": "application/json" },
-      //  body: JSON.stringify(training)
-      //  });
-        console.log(trg)
+
+    saveTraining = () => {
+    const training = {
+        date: this.state.date,
+        activity: this.state.activity,
+        duration: this.state.duration,
+        customer: this.state.customer
+      };
+        fetch("https://customerrest.herokuapp.com/api/trainings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(training)
+        });
         this.toggle2();
     };
 
@@ -127,9 +132,8 @@ class Customerlist extends Component {
         fetch(link, {method: 'DELETE'})
         .then(response => {
             this.listCustomers();
-            {this.setState({ deletevisible: true })}
+            this.setState({ deletevisible: true })
         })
-        this.toggle();
     }
 
     render() {
@@ -183,10 +187,10 @@ class Customerlist extends Component {
             }]
         }, {
             Header: '',
-            accessor: '',
+            accessor: 'links.0.href',
             filterable: false,
             sortable: false,
-            Cell: ({row, value}) => (
+            Cell: ({value}) => (
                 <div className="text-center">
                     <Button outline color="primary" size="sm" onClick={() => this.setCustomer(value)}>
                         <FontAwesomeIcon icon="plus" />
@@ -198,7 +202,7 @@ class Customerlist extends Component {
             accessor: 'links.2.href',
             filterable: false,
             sortable: false,
-            Cell: ({row, value}) => (
+            Cell: ({value}) => (
                 <div className="text-center">
                     <Button outline color="warning" size="sm" onClick={() => this.getTrainings(value)}><FontAwesomeIcon icon="calendar-alt" />
                     </Button>             
@@ -237,7 +241,7 @@ class Customerlist extends Component {
                 />
                 <Alert color="success" isOpen={this.state.visible} toggle={this.onDismiss} className="fixed-bottom">
                     Customer Added Successfully!
-                </Alert>faPlus
+                </Alert>
                 <Alert color="success" isOpen={this.state.deletevisible} toggle={this.onDismiss} className="fixed-bottom">
                     Customer Deleted Successfully!
                 </Alert>
@@ -264,17 +268,21 @@ class Customerlist extends Component {
                 <ModalBody>
                     <Form>
                         <FormGroup>
-                            <Label for="exampleSelectMulti">Select</Label>
-                            <Input type="select" value={this.state.selectedtraining} id="selectedtraining" name="selectedtraining" onChange={this.handleChange}>
-                            {this.state.trainings.map((training, index) =>
-                                <option key={index}>{training.activity} ({moment(training.date).format("DD MMM YYYY")})</option>
-                            )}                                    
-                            </Input>
+                            <Label for="date">Date</Label>
+                            <Input type="date" name="date" id="date" onChange={this.handleChange} value={this.state.date} />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="activity">Activity</Label>
+                            <Input type="text" name="activity" id="activity" onChange={this.handleChange} value={this.state.activity} />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="duration">Duration (minutes)</Label>
+                            <Input type="text" name="duration" id="duration" onChange={this.handleChange} value={this.state.duration} />
                         </FormGroup>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={()=>this.saveTraining(this.state.selectedtraining)}>Add</Button>{' '}
+                    <Button color="primary" onClick={this.saveTraining}>Add</Button>{' '}
                     <Button color="secondary" onClick={this.toggle2}>Cancel</Button>
                 </ModalFooter>
                 </Modal>
