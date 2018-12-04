@@ -1,0 +1,8 @@
+.rbc-row {
+    height: auto;
+}
+
+.rbc-event, .rbc-event-content {
+    font-size: .75rem;
+    height: 50px;
+}

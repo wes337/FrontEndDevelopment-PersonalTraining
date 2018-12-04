@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { NavLink, Form, FormGroup, Col, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Form, FormGroup, Col, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faPlus);
+library.add(faEdit);
 
 class AddCustomer extends Component {
     constructor(props) {
@@ -29,11 +29,24 @@ class AddCustomer extends Component {
     
     toggle() {
         this.setState({
-        modal: !this.state.modal
+            modal: !this.state.modal
         });
     }
 
-    saveCustomer = () => {
+    setCustomer = () => {
+        this.setState({
+            firstname: this.props.customer.firstname,
+            lastname: this.props.customer.lastname,
+            streetaddress: this.props.customer.streetaddress,
+            postcode: this.props.customer.postcode,
+            city: this.props.customer.city,
+            email: this.props.customer.email,
+            phone: this.props.customer.phone
+        });
+        this.toggle();
+    }
+
+    updateCustomer = (link) => {
         const customer = {
             firstname: this.state.firstname,
             lastname: this.state.lastname,
@@ -43,27 +56,18 @@ class AddCustomer extends Component {
             email: this.state.email,
             phone: this.state.phone
         }
-        this.props.saveCustomer(customer);
-        this.setState({
-            firstname: '',
-            lastname: '',
-            streetaddress: '',
-            postcode: '',
-            city: '',
-            email: '',
-            phone: ''         
-        })
+        this.props.updateCustomer(customer, link)
         this.toggle();
-    }
+    };
 
     render() {
         return (
-            <div>
-            <NavLink href="#" onClick={this.toggle}>
-                <FontAwesomeIcon icon="plus" /> Add Customer
-            </NavLink>
+            <span>
+            <Button outline color="warning" onClick={this.setCustomer}>
+                <FontAwesomeIcon icon="edit" /> 
+            </Button>
             <Modal centered isOpen={this.state.modal} toggle={this.toggle}>
-            <ModalHeader toggle={this.toggle}>Add Customer</ModalHeader>
+            <ModalHeader toggle={this.toggle}>Edit {this.props.customer.firstname} {this.props.customer.lastname}</ModalHeader>
             <ModalBody>
                 <Form>
                     <FormGroup row>
@@ -111,11 +115,11 @@ class AddCustomer extends Component {
                 </Form>
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={() => this.saveCustomer()}>Add</Button>{' '}
+                <Button color="warning" onClick={() => this.updateCustomer(this.props.customer.links[0].href)}>Edit</Button>{' '}
                 <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
             </Modal>
-            </div>
+            </span>
         );
     }
 }
