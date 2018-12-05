@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Col, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Alert, Form, FormGroup, Col, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +11,7 @@ class AddCustomer extends Component {
         super(props);
         this.state = {
             modal: false,
+            visible: false,
             firstname: '',
             lastname: '',
             streetaddress: '',
@@ -21,6 +22,7 @@ class AddCustomer extends Component {
         };
 
         this.toggle = this.toggle.bind(this);
+        this.onDismiss = this.onDismiss.bind(this);
     }
 
     handleChange = (event) => {
@@ -31,6 +33,10 @@ class AddCustomer extends Component {
         this.setState({
             modal: !this.state.modal
         });
+    }
+
+    onDismiss() {
+        this.setState({ visible: false });
     }
 
     setCustomer = () => {
@@ -58,6 +64,7 @@ class AddCustomer extends Component {
         }
         this.props.updateCustomer(customer, link)
         this.toggle();
+        this.setState({ visible: true });
     };
 
     render() {
@@ -119,6 +126,9 @@ class AddCustomer extends Component {
                 <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
             </Modal>
+            <Alert className="fixed-bottom text-center" color="warning" isOpen={this.state.visible} toggle={this.onDismiss}>
+                {this.props.customer.firstname} {this.props.customer.lastname} edited successfully!
+            </Alert>
             </span>
         );
     }

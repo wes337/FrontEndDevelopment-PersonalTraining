@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UpdateCustomer from './UpdateCustomer.js';
 import IndividualTrainings from './IndividualTrainings.js';
 import AddTraining from './AddTraining.js';
-import { Card, Button, CardImg, CardTitle, CardText, CardColumns, CardSubtitle, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Alert, Card, Button, CardImg, CardTitle, CardText, CardColumns, CardSubtitle, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faCalendarAlt, faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -21,9 +21,11 @@ class Customer extends Component {
             city: '',
             email: '',
             phone: '',
-            modal: false
+            modal: false,
+            visible: false
         };
         this.toggle = this.toggle.bind(this);
+        this.onDismiss = this.onDismiss.bind(this);
         this.rImages = [
             require('./img/1.png'),
             require('./img/2.png'),
@@ -44,9 +46,14 @@ class Customer extends Component {
         });
     }
 
+    onDismiss() {
+        this.setState({ visible: false });
+    }
+
     deleteCustomer = () => {
         this.props.deleteCustomer(this.state.customer.links[0].href)
         this.toggle();
+        this.setState({ visible: true});
     }
 
     getRandImg = () => {
@@ -92,6 +99,9 @@ class Customer extends Component {
                     <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
+                <Alert className="fixed-bottom text-center" color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+                    {this.state.customer.firstname} {this.state.customer.lastname} deleted successfully!
+                </Alert>
             </CardColumns>
         );
     }
