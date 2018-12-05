@@ -39,7 +39,7 @@ class Trainings extends Component {
                 <td>{Moment(training.date).format("DD MMM YYYY, hh:mmA")}</td>
                 <td>{training.activity ? training.activity : 'No description'}</td>
                 <td>{training.duration ? training.duration : '0'} minutes</td>
-                <td>{training.customer ? training.customer.firstname : 'No customer' }</td>
+                <td>{training.customer ? training.customer.firstname + ' ' + training.customer.lastname : 'No customer' }</td>
             </tr>
         )
 
