@@ -4,7 +4,7 @@ import Customer from './components/Customer.js';
 import Trainings from './components/Trainings.js';
 import Calendar from './components/Calendar.js';
 import GenerateCustomer from './components/GenerateCustomer.js';
-import { Container, Row, Col, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Input, InputGroup, InputGroupAddon } from 'reactstrap';
+import { Alert, Container, Row, Col, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 
 class App extends Component {
@@ -18,12 +18,17 @@ class App extends Component {
         search: ""
     };
     this.toggle = this.toggle.bind(this);
+    this.onDismiss = this.onDismiss.bind(this);
   }
 
   toggle() {
     this.setState({
         isOpen: !this.state.isOpen
     });
+  }
+
+  onDismiss() {
+    this.setState({ visible: false });
   }
 
   listCustomers() {
@@ -46,7 +51,7 @@ class App extends Component {
     })
     .then(response => {
         this.listCustomers();
-        this.setState({ visible: true });
+        this.setState({ customer: customer, visible: true });
     })
     .catch(err => {
         console.error(err);
@@ -127,6 +132,9 @@ class App extends Component {
             <Customer customers={filteredCustomers} deleteCustomer={this.deleteCustomer} updateCustomer={this.updateCustomer} /> 
           </Col>
         </Row>       
+        <Alert className="fixed-bottom text-center" color="success" isOpen={this.state.visible} toggle={this.onDismiss}>
+          {this.state.customer.firstname} {this.state.customer.lastname} added successfully!
+        </Alert>
       </Container>
     );
   }

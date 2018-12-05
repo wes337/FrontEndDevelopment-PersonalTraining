@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Col, Input, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Alert, Form, FormGroup, Col, Input, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import DateTimePicker from 'react-datetime-picker';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,17 +12,23 @@ class AddTraining extends Component {
         super(props);
         this.state = {
             modal: false,
+            visible: false,
             date: new Date(),
             activity: '',
             duration: ''
         };
         this.toggle = this.toggle.bind(this);
+        this.onDismiss = this.onDismiss.bind(this);
     }
 
     toggle() {
         this.setState({
           modal: !this.state.modal
         });
+    }
+
+    onDismiss() {
+        this.setState({ visible: false });
     }
 
     handleChange = (event) => {
@@ -51,6 +57,7 @@ class AddTraining extends Component {
             duration: ""
         });
             this.toggle();
+            this.setState({ visible: true});
     };
 
     render() {
@@ -91,6 +98,9 @@ class AddTraining extends Component {
                     <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
+                <Alert className="fixed-bottom text-center" color="success" isOpen={this.state.visible} toggle={this.onDismiss}>
+                    Training for {this.props.customer.firstname} {this.props.customer.lastname} added successfully!
+                </Alert>
             </span>
         );
     }
