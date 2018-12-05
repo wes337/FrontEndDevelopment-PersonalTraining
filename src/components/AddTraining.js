@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Col, Input, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import DateTimePicker from 'react-datetime-picker';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -11,7 +12,7 @@ class AddTraining extends Component {
         super(props);
         this.state = {
             modal: false,
-            date: '',
+            date: new Date(),
             activity: '',
             duration: ''
         };
@@ -26,6 +27,10 @@ class AddTraining extends Component {
 
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
+    }
+
+    dateChange = (date) => {
+        this.setState({ date: date });
     }
 
     saveTraining = () => {
@@ -61,7 +66,10 @@ class AddTraining extends Component {
                             <FormGroup row>
                                 <Label sm={5} for="date">Date</Label>
                                 <Col sm={7}>
-                                    <Input type="date" name="date" id="date" onChange={this.handleChange} value={this.state.date} />
+                                    <DateTimePicker
+                                        onChange={this.dateChange}
+                                        value={this.state.date}
+                                    />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
