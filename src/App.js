@@ -96,8 +96,8 @@ class App extends Component {
     return (
       <Container>
         <Row className="my-2">
-          <Col className="bg-light rounded shadow-sm">
-          <Navbar color="light" light expand="md">
+          <Col>
+          <Navbar color="light" light expand="md" fixed="top" className="shadow-sm">
               <NavbarBrand className="display-4">Personal Training Company</NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
               <Collapse isOpen={this.state.isOpen} navbar>
@@ -122,8 +122,8 @@ class App extends Component {
             </Navbar>
           </Col>
         </Row>
-        <Row className="my-2">
-            <Col xs="auto" className="ml-auto">
+        <Row className="mt-5 mb-2">
+            <Col xs="auto" className="mx-auto mt-2">
               <GenerateCustomer saveCustomer={this.saveCustomer} />
             </Col>
           </Row>
